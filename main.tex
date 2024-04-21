@@ -1,0 +1,734 @@
+\documentclass[a5j, uplatex, dvipdfmx]{jsbook}
+\pagestyle{headings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{ascmac}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage{pxjahyper}
+\usepackage{subfiles}
+\usepackage{makeidx}
+\usepackage{listings, jlisting}
+\usepackage{tcolorbox}
+    \tcbuselibrary{breakable, skins, theorems}
+\usepackage{lipsum}
+\usepackage{longtable}
+\usepackage[twoside,top=20truemm,bottom=10truemm,inner=19.2truemm,outer=10truemm]{geometry}
+\usepackage{ulem}
+
+%ここからソースコードの表示に関する設定
+\lstset{
+    language={C},
+    basicstyle={\ttfamily},
+    identifierstyle={\small},
+    commentstyle={\smallitshape},
+    keywordstyle={\small\bfseries},
+    ndkeywordstyle={\small},
+    stringstyle={\small\ttfamily},
+    frame={tb},
+    breaklines=true,
+    columns=[l]{fullflexible},
+    numbers=left,
+    xrightmargin=0zw,
+    xleftmargin=3zw,
+    numberstyle={\scriptsize},
+    stepnumber=1,
+    numbersep=1zw,
+    lineskip=-0.5ex
+}
+%ここまでソースコードの表示に関する設定
+
+%index関連
+\newcommand{\makeidxhead}[1]{\textbf{\underline{■ #1 ■}}}
+\newcommand{\symbolindexname}{数字・記号}
+\makeindex
+
+\graphicspath{{./fig/}{../fig/}}
+
+%式番号の設定
+\makeatletter
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{section}.\arabic{equation}}%式に章番号を付加
+\@addtoreset{equation}{section}
+\makeatother
+
+%定理環境など
+\newtcbtheorem[number within=section]{thm}{定理}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm,
+}{thm}
+
+\newtcbtheorem[number within=section]{dfn}{定義}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{dfn}
+
+\newtcbtheorem[number within=section]{rem}{コメント}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{rem}
+
+\newtcbtheorem[number within=section]{prob}{例題}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{prob}
+
+\newtcbtheorem[number within=section]{prop}{命題}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{prop}
+
+\newtcbtheorem[number within=section]{axiom}{公理}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{axiom}
+
+\newtcbtheorem[number within=section]{lem}{補題}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{lem}
+
+\newtcbtheorem[number within=section]{cor}{系}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{cor}
+
+\newtcbtheorem[number within=section]{ex}{例}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{ex}
+
+\newtcbtheorem[number within=section]{exc}{演習}{enhanced, %TikZの内部処理を導入する．ある程度複雑なものには必須．
+    attach boxed title to top left={xshift=5mm,yshift=-3mm}, 
+    boxed title style={colframe = green!35!black, colback = white},
+    coltitle = black,
+    colback = white,
+    colframe = green!35!black,
+    fonttitle = \bfseries,
+    breakable = true,
+    top = 4mm
+}{exc}
+
+\newcommand{\proof}{\textbf{証明.}\ }
+\newcommand{\qed}{$\blacksquare$}
+\newcommand{\idx}[1]{\textbf{#1}\index{#1}}
+\newcommand{\ind}[2]{\textbf{#1}\index{#2@#1}}
+\newcommand{\emphasize}[1]{\textcolor{red}{\textbf{#1}}}
+
+%数学記号
+%\newcommand{\set}[1]{\{ #1\}}
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\bracket}[1]{\Bigl( #1\Bigr)}
+\newcommand{\bigbrac}[1]{\Bigl[ #1\Bigr]}
+
+\newcommand{\for}{\mathrm{for}}
+\newcommand{\as}{\mathrm{as}}
+\newcommand{\st}{\mathrm{s.t.}}
+
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bC}{\mathbb{C}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\bQ}{\mathbb{Q}}
+
+\newcommand{\rT}{\mathrm{T}}
+\newcommand{\rank}{\mathrm{rank}\ }
+
+%物理の記号
+%\newcommand{\ket}[1]{\left| #1 \right \rangle}
+%\newcommand{\bra}[1]{\left \langle #1 \right|}
+\newcommand{\inpro}[2]{\langle #1 \ket{#2}}
+\newcommand{\mean}[1]{\langle #1\rangle}
+\newcommand{\Bigmean}[1]{\Bigl \langle #1\Bigr \rangle}
+
+%\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\Hil}{\mathcal{H}}
+\newcommand{\Fock}{\mathcal{F}}
+
+%人名
+\newcommand{\sch}{Schor\"{o}dinger}
+
+%その他
+\newcommand{\vep}{\varepsilon}
+
+\title{確率と統計}
+\author{いろはす}
+
+\begin{document}
+\maketitle
+
+\chapter{確率論}
+\section{確率空間と確率関数}
+    確率を考えるときには，次の２つが定まっていることが前提となる:
+    \begin{enumerate}
+        \item \ind{確率空間}{かくりつくうかん}$S$: 起こりうること（事象）を考えるための土台となる集合．
+        \item \ind{確率関数}{かくりつかんすう}$P$: 各\ind{事象}{じしょう}（$S$の部分集合\footnote{
+            厳密には，$S$の部分集合全部が事象になるわけではない．
+            これは，確率とか考えられないような変ちくりんな集合もこの世には存在するためであるが，
+            この辺を深堀りし出すとかなり高度な話になってしまうのでここでは気にしないことにする．
+        }）に対し$確率$（$0$以上$1$以下の値）を割り当てる規則．
+    \end{enumerate}
+
+    より正確に言うと，$P$は確率空間$S$\emphasize{上の}確率関数と呼ばれる．
+    また，集合$S$と規則$P$の組$(S,P)$をもって確率空間と呼ぶこともある．
+
+    事象$A$に対して，その確率を$P(A)$と書く．
+
+    \begin{rem}{}{}
+        事象を表わすのには，主に$A,B,C,...$などの記号を使う．
+    \end{rem}
+
+    空集合$\emptyset$もまた一つの事象（\ind{空事象}{くうじしょう}という）として扱う\footnote{
+        集合論では，空集合は全ての集合の部分集合と見做される．
+    }．
+    これは言わば，「絶対に起こらない事象」を表わす．
+
+    また，確率空間$S$自身も（$S$の部分集合だから）事象であり，\ind{全事象}{ぜんじしょう}などと呼ばれる．
+    これは「確実に起こる事象」を表わす．
+
+    \begin{ex}{サイコロ投げ}{dice}
+        サイコロ投げでは，（フツーは\footnote{
+            後ほど述べるように，確率関数$P$の定め方は一通りではない．
+            後述の「ルール」を満たしていれば，数学的にはどんなものも許される．
+            規則$P$としてどんなものを採用するかは，個々の状況に合わせて人間が決めることである．
+        }）次のように定める：
+        \begin{eqnarray*}
+            &S &= \set{1,2,3,4,5,6},\\
+            &P(A) &= \frac{\#A}{6} \ (\#Aは集合Aの要素数).
+        \end{eqnarray*}
+
+        $S$の一つ一つの要素が，サイコロを投げたときに「出る目」を表わす．
+        事象は$S$の部分集合だから，例えば
+        \begin{itemize}
+            \item $A = \set{3}$ （$3$の目が出る事象）
+            \item $B = \set{2,4,6}$ （偶数の目が出る事象）
+            \item $C = \set{5,6}$ （$5$以上の目が出る事象）
+        \end{itemize}
+        などが該当する．これらの確率は，それぞれ次の通りである：
+        \begin{eqnarray*}
+            P(A) &=& \frac{\#A}{6} = \frac{1}{6},\\
+            P(B) &=& \frac{\#B}{6} = \frac{3}{6} = \frac{1}{2},\\
+            P(C) &=& \frac{\#C}{6} = \frac{2}{6} = \frac{1}{3}.
+        \end{eqnarray*}
+    \end{ex}
+
+    \begin{ex}{ダーツ}{darts}
+        ダーツを的に向かって一回だけ投げる行為を考える（ただし，的に当たらなかった場合はやり直すことにする）．
+        この場合，ダーツの的の面全体を$S$と考えることができる．
+        事象は，$S$の一部分を切り抜いた領域の一つ一つである．
+        $A$という領域は，意味として「ダーツが$A$内のどこかに当たる事象」を表わすのである．
+
+        確率関数の決め方は，この場合色々ある．
+        投げる人とか，色々な条件で変わってくる．その時々でふさわしいものを使うべきである．
+    \end{ex}
+
+    \begin{rem}{}{}
+        数学（の確率を扱う分野＝\ind{確率論}{かくりつろん}）は，単なる計算の「枠組み」に過ぎないので，
+        確率関数の「決め方」までは教えてくれない．
+        それは個々の状況に応じて人間が適切に決めることである．
+        
+        高校数学だと，よく
+        \begin{equation}
+            P(A) = \frac{Aが起こる場合の数}{起こりうる事象のすべての場合の数} \label{eq:highschool-like-prob-def}
+        \end{equation}
+        みたいな説明を受ける．我々の記号で書くと，これは
+        \begin{equation}
+            P(A) = \frac{\#A}{\#S}
+        \end{equation}
+        と同じ意味である．
+
+        しかし，これは「確率の決め方」の一つに過ぎない．
+        これ以外にも色々な決め方があるだろうし，場合によっては他の「決め方」の方が現実をうまく表現できることもある．
+        例えば，例\ref{ex:dice}の$P$は式\eqref{eq:highschool-like-prob-def}の「決め方」を用いた例である．
+        しかし，サイコロ投げにおいてこの$P$を使うことが，常に「妥当な」選択だと言い切れるだろうか？
+        もしサイコロが，イカサマ師が使うような，重心がひどく偏っていてやたら1の目ばかり出るようなサイコロだったらどうするのだろう？
+        そのような場合，明らかに例\ref{ex:dice}の$P$を用いるのは不適切であろう．
+    \end{rem}
+
+    上のコメントで述べた通り，確率の「決め方」は一通りではない．
+    しかし，その「決め方」にも最低限のルールがある．
+    確率空間$S$上の確率関数$P$は，必ず以下のルールを満たさなくてはならない：
+    \begin{itemize}
+        \item ルール①：どんな事象$A$に対しても，$P(A)\geq 0.$
+        \item ルール②：どんな事象$A,B$に対しても，
+        \begin{equation*}
+            A\cap B = \emptyset ならばP(A\cup B)=P(A)+P(B).
+        \end{equation*}
+        \item ルール③：$P(S)=1.$
+    \end{itemize}
+
+    上のルールを満たすような$P$のみが，$S$上の確率関数と呼ばれるのである．
+    なお，例\ref{ex:dice}の$P$がこれらのルールを満たしていることは容易に確かめられる．
+
+    \begin{thm}{確率の基本性質}{prob-fundamental-properties}
+        確率空間$S$上の確率関数$P$に対して，次が成り立つ：
+        \begin{enumerate}
+            \item $P(\emptyset) = 0.$
+            \item どんな事象$A,B$に対しても，
+            \begin{equation*}
+                A\subset B ならば P(A) \leq P(B).
+            \end{equation*}
+            \item どんな事象$A$に対しても，$0 \leq P(A) \leq 1.$
+        \end{enumerate}
+    \end{thm}
+    \proof
+
+    1. $\emptyset \cap \emptyset = \emptyset \cup \emptyset = \emptyset$だから，ルール②より
+    \begin{equation*}
+        P(\emptyset) = P(\emptyset \cup \emptyset) = P(\emptyset) + P(\emptyset).
+    \end{equation*}
+    両辺から$P(\emptyset)$を引けば$P(\emptyset) = 0$を得る．
+
+    2. $A' = B \setminus A$（記号$\setminus$は\ind{差集合}{さしゅうごう}の記号で，
+    $B \setminus A$は「$B$に属しかつ$A$に属さないものの集合」を表わす）とおく．
+    このとき，$A\cap A' = \emptyset$かつ，（仮定$A\subset B$より）$B=A\cup A'$だから，
+    ルール②より
+    \begin{equation}
+        P(B) = P(A \cup A') = P(A) + P(A'). \label{eq:prf-prob-fundamental-properties-2}
+    \end{equation}
+    一方，ルール①より$P(A') \geq 0$であるから，
+    \begin{equation}
+        P(A) + P(A') \geq P(A). \label{eq:prf-prob-fundamental-properties-4}
+    \end{equation}
+    式\eqref{eq:prf-prob-fundamental-properties-2},\eqref{eq:prf-prob-fundamental-properties-4}より$P(B) \geq P(A).$
+
+    3. 事象は$S$の部分集合なので，$A\subset S.$
+    これと2.より
+    \begin{equation*}
+        P(A) \leq P(S).
+    \end{equation*}
+    これとルール③（$P(S)=1$）より
+    \begin{equation}
+        P(A) \leq 1.  \label{eq:prf-prob-fundamental-properties-6}
+    \end{equation}
+    また，ルール①より
+    \begin{equation}
+        0 \leq P(A). \label{eq:prf-prob-fundamental-properties-8}
+    \end{equation}
+    式\eqref{eq:prf-prob-fundamental-properties-6},\eqref{eq:prf-prob-fundamental-properties-8}より$0 \leq P(A) \leq 1.$ \qed
+
+\section{条件付き確率}
+    平成30年の国民健康・栄養調査では，糖尿病患者の割合は男性が18.7\%,女性が9.3\%である．
+    割合と確率は厳密に言うと別物であるが，今これらの数値を確率と解釈することにすると，
+    これらの確率には「男性」や「女性」といった「条件」が付いている．
+
+    確率論では，このような確率を\ind{条件付き確率}{じょうけんつきかくりつ}といい，$P(事象|条件)$という形式で書く．
+    上の例で言えば，
+    \begin{equation*}
+        P(糖尿病|男性) = 0.187,\ P(糖尿病|女性) = 0.093
+    \end{equation*}
+    のようになる．
+
+    これらは，\ind{同時確率}{どうじかくりつ}$P(糖尿病 \cap 男性), P(糖尿病 \cap 女性)$とは全くの\emphasize{別物}であることに注意しなければならない．
+    実際，仮に男性と女性の割合が正確に$0.5$ずつだったとすると，
+    \begin{eqnarray*}
+        P(糖尿病 \cap 男性) &=& P(糖尿病|男性) P(男性) = 0.187 \times 0.5 = 0.0935, \\
+        P(糖尿病 \cap 女性) &=& P(糖尿病|女性) P(女性) = 0.093 \times 0.5 = 0.0465
+    \end{eqnarray*}
+    となる．この例を見ると，
+    \begin{equation*}
+        P(事象|条件) = \frac{P(事象 \cap 条件)}{P(条件)}
+    \end{equation*}
+    という関係が成り立っているのがわかる．
+
+    以上の例を踏まえて，条件付き確率の定義を明確にしよう．
+    確率空間$S$上の確率関数$P$を固定する．
+    確率が$0$でない事象$C$（これが条件(Condition)を表わす）に対して，$S$上の確率関数$P_C$を
+    \begin{equation}
+        P_C(A) = \frac{P(A \cap C)}{P(C)}
+    \end{equation}
+    にて定義する（これが先程の「ルール」を満たしていることは容易に確認できる）．
+    この$P_C$を，条件$C$のもとでの\ind{条件付き確率}{じょうけんつきかくりつ}という．
+    なお，事象$A$に対して$P_C(A)$を$P(A|C)$とも表記する．
+
+    \begin{ex}{}{diabetes}
+        上の糖尿病の例で，一人の国民を無作為に抽出したとき，その人（Xさんとする）が糖尿病だったとする．
+        このとき，Xさんが女性である確率を求めてみよう．確率論の記号で書けば，求めるものは
+        \begin{equation*}
+            P(女性|糖尿病)
+        \end{equation*}
+        である．条件付き確率の定義に従えば，これは次の式で求められる：
+        \begin{equation}
+            P(女性|糖尿病) = \frac{P(女性\cap 糖尿病)}{P(糖尿病)}. \label{eq:diabetes-2}
+        \end{equation}
+        ここで，分子の$P(女性\cap 糖尿病)$は上で既に求めた通りである：
+        \begin{equation*}
+            P(女性\cap 糖尿病) = 0.0465.
+        \end{equation*}
+
+        分母は次のようにして求められる．まず，
+        \begin{eqnarray*}
+            &&糖尿病 = (糖尿病 \cap 男性) \cup (糖尿病 \cap 女性), \\
+            &&(糖尿病 \cap 男性) \cap (糖尿病 \cap 女性) = \emptyset
+        \end{eqnarray*}
+        であるから，ルール②より
+        \begin{eqnarray*}
+            P(糖尿病)
+            &=& P((糖尿病 \cap 男性) \cup (糖尿病 \cap 女性)) \\
+            &=& P(糖尿病 \cap 男性) + P(糖尿病 \cap 女性) \\
+            &=& 0.0935 + 0.0465 \\
+            &=& 0.14.
+        \end{eqnarray*}
+
+        以上を式\eqref{eq:diabetes-2}に代入し，答えは
+        \begin{equation*}
+            P(女性|糖尿病) = \frac{0.0465}{0.14} \simeq 0.332
+        \end{equation*}
+        と求まる．
+    \end{ex}
+
+\section{確率変数}
+    \ind{確率変数}{かくりつへんすう}とは，確率的に変動する量を概念化したものである．
+    例えば，サイコロ投げなら出る目の数値をXとおくと，これは確率変数になる．
+    ダーツの場合なら，ダーツが当たった場所の$x$座標と$y$座標をそれぞれ$X,Y$とおくと，これらは確率変数になる．
+    一般に，確率変数には$X,Y,Z$などの文字を用いるのが通例である．
+
+    確率変数の数学的な定義は，次のようになる．
+    再び，確率空間$S$とその上の確率関数$P$を固定する．
+    ここで$S$上の\ind{確率変数}{かくりつへんすう}とは，$S$の要素に一つの実数を対応させる規則（すなわち$S$上の\ind{関数}{かんすう}）である．
+
+    \begin{rem}{}{}
+        確率\emphasize{変数}と名が付くものの実体が関数であるというのは，一見して変な感じがする．
+        しかし，上のサイコロやダーツの例を省みても，$S$の一つ一つの要素に対して，変数の値が一つ確定するという構造になっている．
+        従って「確率変数とは何か？」と問うたとき，この対応関係そのものをもって定義とするのが最もスッキリ行くのである．
+    \end{rem}
+
+    確率変数$X$が取り得る値を，$X$の実現値という．
+    もし$X$が有限個の値しか取り得なければ，それらを$x_1,...,x_n$のような記号で表わすのが通例である．
+
+    $a$を$S$の要素とする．確率変数$X$によって$a$が対応させられる値を$X(a)$と書く．
+
+    \begin{ex}{確率変数の例：サイコロ投げ}{random-var-dice}
+        サイコロ投げで出る目を$X$とすると，$X$の実現値は$1,...,6$である．
+        $a$を$S$の要素とすると，$X$は規則
+        \begin{equation*}
+            X(a) = a
+        \end{equation*}
+        で表わされる．
+    \end{ex}
+
+    実数値関数（実数を実数に対応させる規則）$f$があれば，これを使って確率変数$X$から新たな確率変数$f(X)$を作ることができる．
+    つまり，
+    \begin{equation*}
+        f(X)(a) = f(X(a))
+    \end{equation*}
+    と定義するのである．
+    なお，ここでは$f$を$1$変数の関数としたが，$2$変数やより沢山の変数をもつ関数でも同様である．
+    
+    \begin{ex}{確率変数の例：ダーツ}{}
+        ダーツが当たった場所の$x$座標と$y$座標をそれぞれ$X,Y$とする．
+        なお，的の中心の座標を原点$(0,0)$とする．
+        このとき，座標$(x,y)$の原点からの距離は
+        \begin{equation*}
+            r(x,y) = \sqrt{x^2 + y^2}
+        \end{equation*}
+        で与えられる．そこで，新たな確率変数$R$を
+        \begin{equation*}
+            R = r(X,Y) = \sqrt{X^2 + Y^2}
+        \end{equation*}
+        にて定義すると，これはダーツが当たった場所の原点からの距離を表わす．
+    \end{ex}
+
+    確率変数$X$と，実数$t$や，実数の部分集合$A$に対して，
+    \begin{equation*}
+        X = t,\ X < t,\ X \in A
+    \end{equation*}
+    などは事象である．
+    これらをより「きちんと」書くと，
+    \begin{equation*}
+        \set{a\in S | X(a) = t}, \set{a\in S | X(a) < t}, \set{a\in S | X(a) \in A}
+    \end{equation*}
+    となる（$\set{a\in S | 条件}$で，「条件を満たす$S$の要素$a$の集合」を表わす）．
+    確かに，これらは$S$の部分集合であるから，事象である．
+
+    より一般に，実数についての条件$\varphi(x)$に対して，$\varphi(X)$は事象である．
+    これもより「きちんと」書けば，
+    \begin{equation*}
+        \set{a\in S | \varphi(X(a))}
+    \end{equation*}
+    となる．
+
+    $\varphi(X)$は事象であるから，その確率が定義できる．これを，
+    \begin{equation*}
+        P(\varphi(X))
+    \end{equation*}
+    のように書く．上の具体例で書くなら，これは
+    \begin{equation*}
+        P(X = t),\ P(X < t),\ P(X\in A)
+    \end{equation*}
+    などにあたる．
+
+    \begin{ex}{確率変数の例：サイコロ投げ2}{}
+        再び，例\ref{ex:random-var-dice}のように確率変数$X$を定める．
+        このとき，
+        \begin{eqnarray*}
+            &P(X = 1) &= \cdots = P(X = 6) = \frac{1}{6}, \\
+            &P(X > 4) &= \frac{1}{3}, \\
+            &P(X は偶数) &= \frac{1}{2}.
+        \end{eqnarray*}
+        となる．
+    \end{ex}
+
+\section{確率分布（実現値有限個の場合）}
+    再び，確率空間$S$とその上の確率関数$P$を固定する．
+
+    ここでは，$S$上の確率変数$X$が有限個の値$x_1,...,x_n$のみを取ると仮定する．
+    集合$\set{x_1,...,x_n}$上の関数$p_X$を，
+    \begin{equation}
+        p_X(x) = P(X = x)  \label{eq:probability-distribution-function-discrete}
+    \end{equation}
+    により定義する．このとき，$p_X$を$X$の\ind{確率分布関数}{かくりつぶんぷかんすう}
+    （あるいは単に\ind{確率分布}{かくりつぶんぷ}）という．
+    また，$X$が確率分布$p_X$に\ind{従う}{したがう}ともいい，$X\sim p_X$のように書く．
+    確率分布は，以下の性質を持つ（いずれも確率関数のルールと定理\ref{thm:prob-fundamental-properties}より出る）:
+    \begin{itemize}
+        \item $0 \leq p_X(x_i) \leq 1\ (i = 1,...,n).$
+        \item $p_X(x_1) + \cdots + p_X(x_n) = 1.$
+    \end{itemize}
+
+    \begin{ex}{確率分布の例：サイコロ投げ}{}
+        再び，例\ref{ex:random-var-dice}のように確率変数$X$を定める．
+        このとき，$X$の確率分布$p_X$は，
+        \begin{equation*}
+            p_X(1) = \cdots = p_X(6) = \frac{1}{6}
+        \end{equation*}
+        となる．
+    \end{ex}
+
+    一般に，
+    \begin{equation*}
+        p_X(x_1) = \cdots = p_X(x_n)
+    \end{equation*}
+    が成り立つとき$p_X$を\ind{一様分布}{いちようぶんぷ}という．
+
+    \subsection{期待値，分散，標準偏差}
+        \ind{期待値}{きたいち}：
+        \begin{equation*}
+            E[X] = p_X(x_1)x_1 + \cdots + p_X(x_n)x_n.
+        \end{equation*}
+        
+        \ind{分散}{ぶんさん}：
+        \begin{equation*}
+            V[X] = E[(X - E[X])^2].
+        \end{equation*}
+
+        \ind{標準偏差}{ひょうじゅんへんさ}：
+        \begin{equation*}
+            \sigma[X] = \sqrt{V[X]}.
+        \end{equation*}
+
+    \subsection{確率変数の独立性（実現値有限個の場合）}
+        確率変数$X,Y$の\ind{同時確率分布}{どうじかくりつぶんぷ}：
+        \begin{equation*}
+            p_{X,Y}(x,y) = P(X = x, Y = y).
+        \end{equation*}
+
+        \begin{dfn}{確率変数の独立性（実現値有限個の場合）}{random-var-independence-discrete}
+            確率変数$X,Y$が\ind{独立}{どくりつ}であるとは，全ての$x,y$に対して
+            \begin{equation*}
+                p_{X,Y}(x,y) = p_X(x) p_Y(y)
+            \end{equation*}
+            が成り立つことを言う．
+        \end{dfn}
+
+        \begin{ex}{独立な確率変数の例：サイコロ投げ}{independent-random-var-dice}
+            ２つのサイコロを同時に投げるとき，サイコロ１の出る目を$X$, サイコロ２の出る目を$Y$とすると，
+            $X,Y$は明らかに独立である．
+        \end{ex}
+
+        実際の問題では，２つの変数に関して，一方の変数のとる値がもう一方の変数の確率分布に影響を及ぼさないと考えられる場合，
+        それらの変数は独立であると\emphasize{仮定して}議論することが多い．
+
+\section{確率分布（連続実現値の場合）}
+    この節からは，微分積分の初歩の知識を仮定する．
+
+    ここでは，確率変数$X$はあらゆる実数値を取りうるものとする．また，関数
+    \begin{equation*}
+        f_X(x) = P(X < x)
+    \end{equation*}
+    は微分可能であると仮定する．ここで，$f_X$の導関数を$p_X$と書き，
+    $X$の\ind{確率分布}{かくりつぶんぷ}または\ind{確率密度関数}{かくりつみつどかんすう}と呼ぶ：
+    \begin{equation*}
+        p_X = f'_X.
+    \end{equation*}
+    
+    このとき次が成り立つ：
+    \begin{equation*}
+        P(X < x) = \int_{-\infty}^{x} p_X(t) \diff t.
+    \end{equation*}
+
+    確率密度関数の特徴（いずれも確率関数のルールより出る）：
+    \begin{equation*}
+        p_X(x) \geq 0,\ \int_{-\infty}^{\infty} p_X(x) \diff x = 1.
+    \end{equation*}
+
+    実現値有限個の場合と同様，$X$は確率分布$p_X$に\ind{従う}{したがう}とも言い，$X\sim p_X$と書く．
+
+    \ind{期待値}{きたいち}：
+    \begin{equation*}
+        E[X] = \int_{-\infty}^{\infty} x\ p_X(x) \diff x.
+    \end{equation*}
+    
+    \ind{分散}{ぶんさん}：
+    \begin{equation*}
+        V[X] = E[(X - E[X])^2].
+    \end{equation*}
+
+    \ind{標準偏差}{ひょうじゅんへんさ}：
+    \begin{equation*}
+        \sigma[X] = \sqrt{V[X]}.
+    \end{equation*}
+
+    \subsection{確率変数の独立性（一般の場合）}
+        \begin{dfn}{確率変数の独立性}{random-var-independence-general}
+            確率変数$X,Y$が\ind{独立}{どくりつ}であるとは，全ての$x,y$に対して
+            \begin{equation*}
+                P(X < x, Y < y) = P(X < x) P(Y < x)
+            \end{equation*}
+            が成り立つことを言う．
+        \end{dfn}
+
+        \begin{rem}{}{}
+            上記の独立性の定義は，確率変数の実現値が有限個の場合も，
+            連続的な値を取る場合も含む一般の定義である．
+            実現値有限個の場合には，確率分布関数が
+            式\eqref{eq:probability-distribution-function-discrete}の意味で定義され，
+            上の定義\ref{dfn:random-var-independence-general}は
+            定義\ref{dfn:random-var-independence-discrete}と同値になる．
+        \end{rem}
+
+    \subsection{正規分布}
+        \ind{標準正規分布}{ひょうじゅんせいきぶんぷ}$N_0$：
+        \begin{equation*}
+            N_0(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}x^2}
+        \end{equation*}
+
+        期待値$\mu$, 標準偏差$\sigma$の\ind{正規分布}{せいきぶんぷ}$N(\mu, \sigma)$：
+        \begin{equation*}
+            N(\mu, \sigma)(x) = \frac{1}{\sigma} N_0(\frac{x - \mu}{\sigma})
+        \end{equation*}
+
+        標準正規分布は，期待値$0$, 標準偏差$1$の正規分布に等しい：
+        \begin{equation*}
+            N_0 = N(0,1).
+        \end{equation*}
+
+        \begin{thm}{正規分布の性質}{property-of-normal-distribution}
+            確率変数$X$が，期待値$\mu$, 標準偏差$\sigma$の正規分布に従うとする：
+            \begin{equation*}
+                X \sim N(\mu, \sigma).
+            \end{equation*}
+            このとき，$P(X < x)$は$\mu, \sigma$に依らない関数$f$を使って
+            \begin{equation*}
+                P(X < x) = f\bracket{\frac{x - \mu}{\sigma}}
+            \end{equation*}
+            と書ける．なお，$f$は単調増加関数である．
+        \end{thm}
+
+        上記定理の証明は省略する．\\
+
+        \begin{ex}{正規分布の例：テストの得点の分布}{}
+            ある高校の２年生全体で行われた学力テストの結果は，以下の通りだったとする：
+            \begin{itemize}
+                \item A組：平均点$60$, 標準偏差$15$
+                \item B組：平均点$70$, 標準偏差$8$
+            \end{itemize}
+            このとき，「$90$点以上取った人数が多いクラス」はどちらと予想されるだろうか？
+            なお，得点分布はA組，B組いずれも正規分布に従うと仮定する．
+
+            まず，生徒の取る点数を確率変数$X$で表わし，平均を$\mu,$ 標準偏差を$\sigma$としよう．
+            仮定より$X$は正規分布に従うから，$X\sim N(\mu, \sigma)$である．
+            ここで考えたいのは$P(X \geq 90)$だが，これは
+            \begin{equation*}
+                P(X \geq 90) = 1 - P(X < 90)
+            \end{equation*}
+            と書き直すことができる．
+            定理\ref{thm:property-of-normal-distribution}より，
+            \begin{equation*}
+                P(X < 90) = f\bracket{\frac{90 - \mu}{\sigma}}
+            \end{equation*}
+            であるから，
+            \begin{equation*}
+                P(X \geq 90) = 1 - f\bracket{\frac{90 - \mu}{\sigma}}
+            \end{equation*}
+            と書き表わすことができる．
+            $f$は$\mu, \sigma$に依らない関数だったから，これで$P(X \geq 90)$の大小関係が判別できる．
+            $f$は単調増加なので，$(90 - \mu)/\sigma$が小さいほど，$P(X \geq 90)$が大きくなることがわかる．
+
+            そこで，各クラスのテスト結果を$(90 - \mu)/\sigma$に当てはめてみると，
+            \begin{itemize}
+                \item A組：
+                \begin{equation*}
+                    \frac{90 - 60}{15} = 2
+                \end{equation*}
+                \item B組：
+                \begin{equation*}
+                    \frac{90 - 70}{8} = 2.5
+                \end{equation*}
+            \end{itemize}
+            となり，A組の方が小さい．従って，$90$点以上を取った人数はA組の方が多いと考えられる．
+
+            一見すると，平均点が低いA組の方が成績で劣っているように思われるが，
+            この場合は標準偏差の大きさ――言い換えれば「裾野の広さ」――で平均点の低さをカバーしたのだと解釈できる．
+        \end{ex}
+
+\end{document}

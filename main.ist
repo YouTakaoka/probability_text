@@ -1,0 +1,5 @@
+lethead_flag 1
+letter_head 2
+heading_prefix "\\makeidxhead{"
+heading_suffix "}"
+symhead_positive "\\symbolindexname"
